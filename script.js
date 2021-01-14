@@ -27,16 +27,16 @@ function DrawPlayer() {
     line(0, -5, 0, -20);
     line(5, 0, 20, 0);
     line(-5, 0, -20, 0);
-/*
-    line(0, 0, 0, 50)
-    line(0, 50, -10, 70)
-    line(0, 50, 10, 70)
-
-    line(0, 25, -20, 10)
-    line(0, 25, 20, 40)
-
-    rect(20, 50, 30, 20, 5)
-    circle(0, 0, this.width);*/
+    /*
+        line(0, 0, 0, 50)
+        line(0, 50, -10, 70)
+        line(0, 50, 10, 70)
+    
+        line(0, 25, -20, 10)
+        line(0, 25, 20, 40)
+    
+        rect(20, 50, 30, 20, 5)
+        circle(0, 0, this.width);*/
 }
 
 function MovePlayer() {
