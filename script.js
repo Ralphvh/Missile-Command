@@ -9,11 +9,12 @@ let gun = null
 
 function setup() {
     createCanvas(800, 500);
+    angleMode(DEGREES);
 
     player = createSprite(width / 2, height / 2, 20, 20);
     player.draw = DrawPlayer;
 
-    gun = createSprite(width/2, height- 50, 25, 25)
+    gun = createSprite(width / 2, height - 50, 25, 25)
 }
 
 function draw() {
@@ -26,13 +27,32 @@ function draw() {
     drawSprites();
 }
 
-function CreateFriendlyMissile(){
-    let startPosition = gun.position;
-    let endPosition = player.position;
+function CreateFriendlyMissile() {
+    let startPosition = gun.position.copy();
+    let endPosition = player.position.copy();
 
-    let missle = createSprite(startPosition.x, startPosition.y, 5, 5)
+    let direction = p5.Vector.sub(endPosition, startPosition);
 
-    let direction = p5.Vector.sub(endPosition, startPosition)
+    let directionAngle = direction.heading();
+
+    let missile = createSprite(startPosition.x, startPosition.y, 10, 10);
+    missile.setSpeed(5, directionAngle);
+    missile["goal"] = endPosition;
+    missile.draw = DrawFriendlyMissile;
+}
+
+function DrawFriendlyMissile() {
+    circle(0, 0, this.width);
+
+    let currentPosition = this.position;
+    let goalPosition = this.goal;
+    let distance = currentPosition.dist(goalPosition);
+
+    if (distance < 5) {
+        CreateExplosion(currentPosition.x, currentPosition.y);
+        this.remove();
+    }
+
 }
 
 function RemoveDeadExplosions() {
@@ -45,13 +65,13 @@ function RemoveDeadExplosions() {
 
 function shoot() {
     shootTimer += deltaTime;
-    if (keyIsDown(32) && shootTimer > 1000 / shotsPerSecond) { 
-        createExplosion(player.position.x, player.position.y);
+    if (keyIsDown(32) && shootTimer > 1000 / shotsPerSecond) {
+        CreateFriendlyMissile();
         shootTimer = 0;
     }
 }
-    
-function createExplosion(x,y) {
+
+function CreateExplosion(x, y) {
     let explosion = createSprite(x, y, 1, 1);
     explosion.life = explosionLife;
     explosion.draw = DrawExplosion;
@@ -63,7 +83,7 @@ function DrawExplosion() {
     this.width++;
     this.height++;
 }
-   
+
 
 function DrawPlayer() {
     fill(0);
