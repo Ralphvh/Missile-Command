@@ -1,6 +1,6 @@
 let player = null;
 let gun = null
-let enemyMissileGroup = 0;
+let enemyMissilesGroup = 0;
 
 let playerSpeed = 5;
 
@@ -23,6 +23,8 @@ let enemyMissileSpeed = 2;
 
 let explosionLife = 100;
 
+let city1 = null
+let citY2 =null
 function setup() {
     createCanvas(800, 500);
     angleMode(DEGREES);
@@ -30,9 +32,68 @@ function setup() {
     player = createSprite(width / 2, height / 2, 20, 20);
     player.draw = DrawPlayer;
 
-    gun = createSprite(width / 2, height - 50, 25, 25)
+    gun = createSprite(width / 2, height - 50, 25, 25);
 
-    enemyMissileGroup = new Group;
+    enemyMissilesGroup = new Group();
+
+     city1 = createSprite(width - 100, height - 10, 100, 20);
+    city1.draw = DrawCity;
+
+    let towers = [];
+    let tower = createSprite(city1.position.x, city1.position.y, 20, 50);
+    towers.push(tower);
+    citY1city1["towers"] = towers
+
+     tower = createSprite(city1.position.x + 40, city1.position.y, 20, 50);
+    towers.push(tower);
+    city1["towers"] = towers
+
+     tower = createSprite(city1.position.x - 40, city1.position.y, 20, 50);
+    towers.push(tower);
+    city1["towers"] = towers
+
+    city2 = createSprite(0 + 100, height - 10, 100, 20);
+    city2.draw = DrawCity;
+
+    let towers = [];
+    let tower = createSprite(city2.position.x, city2.position.y, 20, 50);
+    towers.push(tower);
+    city2["towers"] = towers
+
+     tower = createSprite(city2.position.x + 40, city2.position.y, 20, 50);
+    towers.push(tower);
+    citY2["towers"] = towers
+
+     tower = createSprite(city2.position.x - 40, city2.position.y, 20, 50);
+    towers.push(tower);
+    city2["towers"] = towers
+}
+
+function ShowLifePoints() {
+    let city1LifePoints = city1.LifePoints.toString();
+    city1LifePoints += "/3"
+
+    fill('white');
+    textSize(24);
+    text("/3", 100, 470)
+}
+
+function ShowLifePointsOfCity(city);
+    let city1LifePoints = city1.LifePoints.toString();
+    city1LifePoints += "/3"
+
+function DrawCity() {
+    rect(0, 0, this.width, this.height);
+
+
+    this.overlap(enemyMissilesGroup, CityIsHit);
+}
+
+function CityIsHit(city, enemyMissile) {
+    city.towers[0].remove();
+    city.towers.shift();
+
+    enemyMissile.remove
 }
 
 function draw() {
@@ -43,6 +104,9 @@ function draw() {
     RemoveDeadExplosions();
 
     drawSprites();
+
+    ShowLifePoints();
+
 }
 
 function EnemyShootsMissile() {
@@ -66,7 +130,7 @@ function CreateFriendlyMissile() {
     missile.setSpeed(5, directionAngle);
     missile["goal"] = endPosition;
 
-    enemyMissileGroup.add(missile)
+    enemyMissilesGroup.add(missile)
 
     missile.draw = DrawFriendlyMissile;
 }
@@ -143,7 +207,7 @@ function DrawExplosion() {
     this.width++;
     this.height++;
 
-    this.overlap(enemyMissileGroup, enemyMissileIsHit);
+    this.overlap(enemyMissilesGroup, enemyMissileIsHit);
 }
 
 function enemyMissileIsHit(explosion, enemyMissile) {
